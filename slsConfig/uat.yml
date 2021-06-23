@@ -1,0 +1,21 @@
+# QA configurations
+
+# Deployment Stage Configs
+stage: uat
+region: us-east-1
+
+# SLS Service Name
+slsServiceName: name_me_after_repo_name  # use the repo name. 
+
+# Lambda Name and File Name Configs
+lambdaFileName: addFileNameHere       # do not include file extension or / 
+lambdaHandlerFunctionName: addHandlerNameHere
+
+# IAM Role Configs
+iamRoleARN: arn:aws:iam::xxxxxxxxxxxx:role/some-policy-for-aws  # update with real ARN
+
+# API Gateway Configs (optional)
+parentRestApiId:    xpk8jjxnei            # found in the first part of the api URL.  https://xpk8jjxnei.execute-api.us-east-1....
+restApiRootResourceId:  53ljlo            # for example: 53ljlo   which would put under a /v1/ resource. 
+
+

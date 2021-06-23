@@ -1,0 +1,18 @@
+{
+  "name": "serverless-framework-with-js",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {},
+  "devDependencies": {
+    "latest": "^0.2.0",
+    "serverless-deployment-bucket": "^1.5.1",
+    "serverless-offline": "^7.0.0",
+    "serverless-python-requirements": "^5.1.1",
+    "serverless-stack-output": "^0.2.3"
+  },
+  "scripts": {
+    "deploy": "serverless deploy",
+    "start": "serverless offline",
+    "pages": "http-server"
+  }
+}

@@ -1,0 +1,15 @@
+
+{
+    "client_api_key": "605d9af1b34443ed982aeac588eeba5f",   
+    "Hostname": "mtx-sandbox-dev-128.cuh0yjczstj3.us-east-1.rds.amazonaws.com",    
+    "client_state": "NY",  
+    "password": "Development123",  
+    "port": "5432",  
+    "username": "devspace",  
+    "dataSourceName": "ny-postgre",  
+    "dataSourceType": "pgsql",  
+    "dbName": "nypatients",  
+    "tables": "patients",  
+    "schema": "dbo",  
+    "sftpPath": ""
+}

@@ -1,0 +1,86 @@
+# How to Use This Stock SLS.....
+
+# slsConfig/ contains the stage(s) configuration and are imported by SLS into this file here. 
+# Update or change the stock configs as needed in slsConfig/
+
+# Lines with ######  indicate config information that needs hardcoded and is unique per repo
+# Usually the hardcoded information is in the Function or Resource section.
+
+# Multiple commented out lines indicate the section may or may not be need depending on use case. 
+# If you don't need a commented out section, please delete it. 
+
+
+service: ${self:custom.configuration.slsServiceName}    
+frameworkVersion: '^2.43.0'              # SLS framework version >2.43 && <v3.0.0
+configValidationMode: error              # deployments blocked if there is a config warning
+
+
+custom: 
+  folderName: lambdas
+  runtime: python3.8
+  lambdaFileName: ${self:custom.configuration.lambdaFileName}                  # do not include file extension
+  lambdaFunctionName: ${self:custom.configuration.lambdaHandlerFunctionName}   # the main handler function
+  stage: ${opt:stage, 'dev'}
+  configuration: ${file(slsConfig/${self:custom.stage}.yml)}
+  pythonRequirements:
+    slim: true              # strip the .so files, remove __pycache__ and dist-info directories as well as .pyc and .pyo files
+    dockerizePip: non-linux # use Docker when installing packages with pip need Docker installed for this to work.
+  # serverless-offline:
+  #   noPrependStageInUrl: true 
+
+
+provider:
+  name: aws
+  region: ${self:custom.configuration.region}
+  runtime: ${self:custom.runtime}
+  stage: ${self:custom.configuration.stage}     # provide a --stage option in the CLI or, default to dev if not specified. e.g. sls deploy --stage prod
+  deploymentBucket:
+    name: deployed-lambdas-${self:custom.stage} # deployed-lambdas-stage is a folder to hold ALL lambdas regardless of repo
+    blockPublicAccess: true
+    serverSideEncryption: AES256
+    skipPolicySetup: true
+    maxPreviousDeploymentArtifacts: 6           # On every deployment the framework prunes the bucket to remove artifacts older than this limit. The default is 5
+  deploymentPrefix: ${self:service}             # creates folder name inside deployment bucket in which the zip file goes  
+  iam: 
+    role:  ${self:custom.configuration.iamRoleARN}
+  apiGateway:
+    restApiId:   ${self:custom.configuration.parentRestApiId}                    #the parent API ID for all resources
+    restApiRootResourceId:  ${self:custom.configuration.restApiRootResourceId}   # the resource all other resources nest under, such as /v1
+    # restApiResources: 
+    #   /configure: uvyhr5  # /configure POST method
+
+
+plugins:
+  - serverless-offline                # allows for offline/local development
+  - serverless-deployment-bucket      # allows for all lambda files to deploy to 1 S3 bucket
+  - serverless-python-requirements    # if needed, bundle your python dependencies specified in your requirements.txt or Pipfile when you run sls deploy.
+
+
+package:
+  patterns:                           # exclude all files starting with !
+    - '!node_modules/**'
+    - "!**/.pytest_cache/**"
+    - "!**/__pycache__/**"
+    - "!**.npm/**"
+    - "!slsConfig/**"
+    - "!README.md"
+    - "!package.json"
+    - "!package-lock.json"
+    - "lambdas/**"                    # include only files or folder in lambda 
+
+
+functions:
+  theSLSFunctionName:         ####### function name SLS uses during sls deploy   
+    name: ${self:service}-${self:custom.stage}
+    handler: ${self:custom.folderName}/${self:custom.lambdaFileName}.${self:custom.lambdaFunctionName}
+    # events:                                   ###### the event trigger for the lambda & its configs
+    #   - http:   
+    #       method: post      
+    #       path: connection  
+    #       cors: true  
+    #       request:
+    #         parameters:
+    #           headers:
+    #             content-type: false  
+    #             authorization: false  
+    #             api-key: false  
