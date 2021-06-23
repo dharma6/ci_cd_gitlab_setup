@@ -1,14 +1,4 @@
-# NAME_OF_REPO_HERE
-Add short description of what this repo does so other people know. 
-
-\
-&nbsp;
-TABLE OF CONTENTS
-
-
-[[_TOC_]]    
-
-
+## Credit goes to Brad Beggs : https://www.linkedin.com/in/bradleybeggs/
 -----------------
 ## First Step - Install Serverless & Plugins
 First, install Serverless (SLS) globally so you can use the SLS CLI commands. 
