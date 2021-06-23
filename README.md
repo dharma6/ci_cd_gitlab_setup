@@ -1,4 +1,6 @@
-## Credit goes to Brad Beggs : https://www.linkedin.com/in/bradleybeggs/
+## Credit goes to Brad Beggs : https://www.linkedin.com/in/bradleybeggs/. 
+This is primarly designed for our work place CI-CD setup, and it was setup by Brad. I just helped him in testing the end-end of the following CI-CD in one of our project which helped us to discover new things. 
+
 -----------------
 ## First Step - Install Serverless & Plugins
 First, install Serverless (SLS) globally so you can use the SLS CLI commands. 
